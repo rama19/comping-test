@@ -26,9 +26,9 @@
   <ng-container matColumnDef="actions">
     <th mat-header-cell *matHeaderCellDef>Actions</th>
     <td mat-cell *matCellDef="let user" class="action-btns">
-      <mat-icon aria-hidden="false" aria-label="edit" fontIcon="edit"
+      <mat-icon aria-hidden="false" *ngIf="!isAdmin" aria-label="edit" fontIcon="edit"
         (click)="editUser(user)"></mat-icon>
-      <mat-icon aria-hidden="false" aria-label="delete" fontIcon="delete"
+      <mat-icon aria-hidden="false" *ngIf="!isAdmin" aria-label="delete" fontIcon="delete"
         (click)="deleteUserDialog(user)"></mat-icon>
     </td>
   </ng-container>
@@ -37,7 +37,7 @@
     <th mat-header-cell *matHeaderCellDef>Download</th>
     <td mat-cell *matCellDef="let user">
       <mat-icon aria-hidden="false" aria-label="cloud_download" fontIcon="cloud_download"
-        (click)="downloadFile(user)"></mat-icon>
+        (click)="downloadFile(user)" *ngIf="!isAdmin"></mat-icon>
     </td>
   </ng-container>
 

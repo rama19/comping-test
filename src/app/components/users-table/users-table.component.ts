@@ -19,6 +19,7 @@ import { FileDownloadService } from 'src/app/services/file-download.service';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-users-table',
@@ -40,21 +41,24 @@ export class UsersTableComponent {
   dataSource: User[] = [];
   filteredUsers: any[] = [];
   searchInput: string = '';
+  isAdmin = true;
 
   constructor(
     private adminService: AdminService,
     private fileDownloadService: FileDownloadService,
+    private authService: AuthService,
     private toastService: ToastService,
     private cdr: ChangeDetectorRef,
     public dialog: MatDialog
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.adminService.getUsers().subscribe((data) => {
       this.dataSource = data;
       this.filteredUsers = [...this.dataSource];
       this.cdr.detectChanges();
     });
+    this.isAdmin = this.authService.isUserAdmin();
   }
 
   editUser(user: User): void {

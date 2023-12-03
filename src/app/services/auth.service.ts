@@ -30,4 +30,10 @@ export class AuthService {
       return this.token;
     }
 
+    isUserAdmin(): boolean {
+      const realmAdminRole = 'realm-admin'; 
+      const hasRealmAdminRole = this.keycloakService.getUserRoles()?.includes(realmAdminRole);
+      return !!hasRealmAdminRole;
+    }  
+
 }
