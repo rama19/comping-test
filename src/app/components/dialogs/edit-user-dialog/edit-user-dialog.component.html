@@ -10,16 +10,14 @@
       <input matInput formControlName="lastName">
     </mat-form-field>
     <mat-form-field>
-      <mat-label>username</mat-label>
+      <mat-label>Username</mat-label>
       <input matInput formControlName="username">
     </mat-form-field>
+    <mat-form-field>
+      <mat-label>Role</mat-label>
+      <input matInput formControlName="role">
+    </mat-form-field>
   </form>
-  <form [formGroup]="accessForm">
-    <div *ngFor="let item of roles">
-      <mat-checkbox [formControlName]="item.key">{{ item.key }}</mat-checkbox>
-    </div>
-  </form>
-</div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Cancel</button>
   <button #saveButton mat-button [mat-dialog-close]="form.value"

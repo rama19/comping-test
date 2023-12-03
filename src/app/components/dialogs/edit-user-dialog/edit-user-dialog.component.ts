@@ -19,6 +19,7 @@ import { MatButtonModule } from '@angular/material/button';
 import {
   MatCheckboxModule,
 } from '@angular/material/checkbox';
+import { AdminService } from 'src/app/services/admin.service';
 
 @Component({
   selector: 'app-edit-user-dialog',
@@ -40,9 +41,10 @@ import {
 export class EditUserDialogComponent {
   form!: FormGroup;
   accessForm!: FormGroup;
+  availableRoles: any = [];
   roles: any = [];
-
   constructor(
+    private adminService: AdminService,
     public dialogRef: MatDialogRef<EditUserDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder
@@ -53,6 +55,7 @@ export class EditUserDialogComponent {
       firstName: [this.data.firstName, Validators.required],
       lastName: [this.data.lastName, Validators.required],
       username: [this.data.username, Validators.required],
+      role: [this.data.role]
     });
 
     const formControls: { [key: string]: any } = {};

@@ -66,6 +66,7 @@ export class UsersTableComponent {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.adminService.uploadUser(result);
+        this.createAndAssignRoles(user.id);
         this.toastService.showSuccess('User updated');
       }
     });
@@ -123,6 +124,29 @@ export class UsersTableComponent {
         user.firstName.toLowerCase().includes(searchTerm) ||
         user.lastName.toLowerCase().includes(searchTerm) ||
         user.username.toLowerCase().includes(searchTerm)
+    );
+  }
+
+  createAndAssignRoles(userId: string): void {
+    // first create 
+    this.adminService.createRole('custom_role').subscribe(
+      (response) => {
+        console.log('Role created:', response);
+
+        // then assign role
+        this.adminService.assignRoleToUser(userId, 'custom_role').subscribe(
+          (assignmentResponse) => {
+            this.toastService.showSuccess('Role assigned to user');
+          },
+          (assignmentError) => {
+            console.error('error', assignmentError);
+            this.toastService.showError('Error assigning role to user');
+          }
+        );
+      },
+      (error) => {
+        console.error('Error creating role:', error);
+      }
     );
   }
 }

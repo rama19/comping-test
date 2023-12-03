@@ -8,7 +8,8 @@ import { User } from '../models/user.model';
   providedIn: 'root',
 })
 export class AdminService {
-  private baseUrl = 'https://keycloak-tt-keycloak-stage.apps.ocp.thingstalk.eu/admin/realms/test-realm6';
+  private baseUrl =
+    'https://keycloak-tt-keycloak-stage.apps.ocp.thingstalk.eu/admin/realms/test-realm6';
   private users: User[] = [];
 
   constructor(private http: HttpClient, private authService: AuthService) {}
@@ -21,10 +22,15 @@ export class AdminService {
     const token = this.getToken();
     const url = `${this.baseUrl}/users`;
     const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`, 
+      Authorization: `Bearer ${token}`,
     });
 
     return this.http.get<any[]>(url, { headers });
+  }
+
+  getAvailableRoles(): Observable<string[]> {
+    const url = `${this.baseUrl}/roles`;
+    return this.http.get<string[]>(url);
   }
 
   uploadUser(user: any): Observable<any> {
@@ -32,7 +38,7 @@ export class AdminService {
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`, 
+      Authorization: `Bearer ${token}`,
     });
 
     const body = this.createUserPayload(user);
@@ -60,8 +66,22 @@ export class AdminService {
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`, 
+      Authorization: `Bearer ${token}`,
     });
-    return this.http.delete<any>(this.baseUrl + '/users/' + userId, { headers });
+    return this.http.delete<any>(this.baseUrl + '/users/' + userId, {
+      headers,
+    });
+  }
+
+  createRole(roleName: string): Observable<any> {
+    const url = `${this.baseUrl}/roles`;
+    const body = { name: roleName };
+    return this.http.post(url, body);
+  }
+
+  assignRoleToUser(userId: string, roleName: string): Observable<any> {
+    const url = `${this.baseUrl}/users/${userId}/role-mappings/realm`;
+    const body = [{ name: roleName }];
+    return this.http.post(url, body);
   }
 }

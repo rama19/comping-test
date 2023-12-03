@@ -28,6 +28,6 @@ export class AuthService {
         console.error('Error checking login status:', error);
       });
       return this.token;
-  }
+    }
 
 }
